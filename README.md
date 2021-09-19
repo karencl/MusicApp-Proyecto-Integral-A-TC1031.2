@@ -25,7 +25,26 @@ El algoritmo de ordenamiento que utilicé fue el de *Quick Sort*, ya que a pesar
 ...
 
 #### Hace un análisis de complejidad correcto y completo para todo el programa y sus componentes.
-...
+- **Busca elemento en lista:**
+Al usar una búsqueda secuencial, tenemos que en el peor de los casos tenemos O(n), debido a que se puede llegar a recorrer la lista por completo para encontrar o no un elemento.
+Se usó este método y no el binario, debido a que no siempre la lista va a estar ordenada.
+
+- **Ordena lista:**
+Se utilizó el método de *Quick Sort*, que tiene una complejidad de O(n^2) para el peor de los casos y O(n log(n)) para el promedio, debido a que con cada vuelta, *n* se parte en 2.
+Para la parte del *Swap* para los datos de los elementos, tenemos que la complejidad es O(1). Es constante por el simple hecho de que en este caso, solo se a hacer la operación de cambiar los datos de una canción por otra.
+
+- **Muestra lista:**
+Tanto para el caso de mostrarla de principio a fin, como de fin a principio, tenemos que la complejidad es de O(n) debido a que la lista se recorre por completo para ir imprimiendo los datos de cada elemento.
+
+- **Llena lista:**
+Depende de la cantidad de líneas de información que hayan en el archivo *songs.csv*, por lo que el tiempo de complejidad va a ser de O(n).
+
+- **Extras:**
+Mostrar el menú tiene una complejidad O(n), debido al *n* número de opciones que se muestran.
+Imprimir una sola canción es de complejidad contante, o sea: O(1)
+
+... -> pendiente
+
 
 ## SICT0303B: Implementa acciones científicas
 
@@ -34,16 +53,17 @@ Como se mencionó en la parte de arriba, además del archivo *.cpp* que contiene
 
 - Visualizar la playlist
 - Editar la playlist
-  - Agregar canciones
-  - Eliminar canciones
+  - Agregar canciones -> pendiente
+  - Eliminar canciones -> pendiente
 - Ordenar la playlist 
-  - Por nombre (ascendente/ descendente)
-  - Por autor (ascendente/ descendente)
-  - Por duración (en minutos)
+  - Por nombre 
+  - Por autor 
+  - Por duración (en segundos) -> pendiente
 - Buscar una canción
   - Por nombre
   - Por autor
-  - Por tiempo de duración (en minutos)
+  - Por tiempo de duración (en segundos) -> pendiente
+- Vaciar la lista -> pendiente
 
 #### Implementa mecanismos de lectura de archivos correctos y útiles.
 En la parte de los archivos, podemos encontrar el de "songs.csv"; el cual contiene una lista de canciones con sus respetivas duraciones y autores.
@@ -51,4 +71,4 @@ En la parte de los archivos, podemos encontrar el de "songs.csv"; el cual contie
 #### Implementa mecanismos de escritura de archivos correctos y útiles. 
 El archivo y mencionado, se abre desde que inicia el programa y es usado para la extracción de datos, con el fin de usarlos en la estructura lineal, como almacén de estos.
 
-Se usan algunas funciones extras como *getData()*, *showListForward()*, *showListBackwards()*, *addSong()* y *deleteSong()*, con el fin de realizar más que lecturas, al agregar o eliminar líneas de datos en el archivo.
+Se usan algunas funciones extras como *getData()*, *showListForward()*, *showListBackwards()*, *addSong()*, *deleteSong()*, *quickSort()* y *sequentialSearch()* con el fin de realizar más que lecturas, al agregar o eliminar líneas de datos en el archivo.
