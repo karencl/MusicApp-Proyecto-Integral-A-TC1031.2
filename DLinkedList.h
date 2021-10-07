@@ -22,6 +22,7 @@
 #define DLinkedList_h
 
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 // DLinkedList class
@@ -42,6 +43,9 @@ class DLinkedList {
         void getData(ifstream&);
         void showListForward();
         void showListBackwards();
+        void addSong(string, string, int, int);
+        bool deleteSong(int);
+        void clearList();
 };
 
 /*
@@ -101,7 +105,6 @@ void DLinkedList::getData(ifstream &file) {
             tail = new_song;
         }
     }
-    
 }
 
 /*
@@ -118,20 +121,23 @@ void DLinkedList::showListForward() {
     current = head;
     
     if (head) {
+        int i = 1;
         while (current) {
             int min = current->duration / 60;
             int sec = current->duration % 60;
             
-            cout << "- - - - - - - - - - - - - -" << endl;
+            cout << i << " - - - - - - - - - - - - - -" << endl;
             cout << "Song: " << current->name << endl;
             cout << "Author: " << current->author << endl;
             cout << "Duration: " << min << ":" << sec << endl;
             cout << endl;
             current = current->next;
+            
+            i++;
         }
         cout << "- - - - - - - - - - - - - -" << endl;
     } else {
-        cout << "The list is empty." << endl;
+        cout << "La lista está vacía." << endl;
     }
 }
 
@@ -149,21 +155,124 @@ void DLinkedList::showListBackwards() {
     current = tail;
     
     if (head) {
+        int i = 1;
         while (current) {
             int min = current->duration / 60;
             int sec = current->duration % 60;
             
-            cout << "- - - - - - - - - - - - - -" << endl;
+            cout << i << " - - - - - - - - - - - - - -" << endl;
             cout << "Song: " << current->name << endl;
             cout << "Author: " << current->author << endl;
             cout << "Duration: " << min << ":" << sec << endl;
             cout << endl;
             current = current->previous;
+            
+            i++;
         }
         cout << "- - - - - - - - - - - - - -" << endl;
     } else {
-        cout << "The list is empty." << endl;
+        cout << "La lista está vacía." << endl;
     }
+}
+
+/*
+ * @param string, string, int, int
+ * @return
+ *
+ * A new song gets added to the end of the list using tail.
+ *
+ */
+void DLinkedList::addSong(string _name, string _author, int dur_min, int dur_sec){
+    Song *new_song = new Song();
+    new_song->name = _name;
+    new_song->author = _author;
+    new_song->duration = (dur_min*60) + dur_sec;
+    
+    if (!head) {
+        head = new_song;
+        tail = new_song;
+    } else {
+        tail->next = new_song;
+        new_song->previous = tail;
+        tail = new_song;
+    }
+}
+
+/*
+ * @param int
+ * @return bool
+ *
+ * A new song gets removed from the list and deleted, using it's index in it.
+ *
+ */
+bool DLinkedList::deleteSong(int pos) {
+    Song *aux = head;
+    bool removed = false;
+    
+    if (!aux) {
+        cout << "\nLa lista está vacía." << endl;
+        return removed;
+    } else {
+        Song *song_to_be_removed = head;
+        if (pos == 0) {
+            head = head->next;
+            head->previous = NULL;
+            delete song_to_be_removed;
+            
+            removed = true;
+            return removed;
+        } else {
+            Song *aux1 = head;
+            Song *aux2 = aux1->next;
+            int pos_check = 1;
+            
+            while (aux2) {
+                if (pos_check == pos) {
+                    song_to_be_removed = aux2;
+                    
+                    if (aux2 == tail) {
+                        aux1->next = NULL;
+                        tail = aux1;
+                    } else {
+                        aux1->next = aux2->next;
+                        aux2->next->previous = aux1;
+                    }
+                    
+                    delete song_to_be_removed;
+                    removed = true;
+                    return removed;
+                }
+                pos_check++;
+                aux1 = aux1->next;
+                aux2 = aux2->next;
+            }
+        }
+    }
+    
+    cout << "\nCanción no encontrada." << endl;
+    return removed;
+}
+
+/*
+ * @param
+ * @return
+ *
+ * Clears the playlist.
+ * (All songs are removed and deleted from it).
+ *
+ */
+void DLinkedList::clearList() {
+    Song *aux1 = new Song();
+    Song *aux2 = new Song();
+    
+    while (aux1) {
+        aux2 = aux1->next;
+        delete aux1;
+        aux1 = aux2;
+    }
+    
+    head = NULL;
+    tail = NULL;
 }
 
 #endif /* DLinkedList_h */
