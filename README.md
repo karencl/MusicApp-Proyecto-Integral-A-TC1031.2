@@ -1,3 +1,10 @@
+# IMPORTANTE ---> A calificar en el segundo avance:
+
+- Se corrigió el error de no poder abrir el archivo *songs.csv*, por lo que ya se puede apreciar la lectura de archivos, su acomodo en la estructura lineal y el algoritmo de ordenamiento y búsqueda aplicado en esta.
+- Se implementó un menú para las consultas de información.
+- Análisis de complejidad de todo lo pedido hasta el momento.
+
+
 # MusciApp - Proyecto-Integral-A-TC1031.2
 El proyecto de "MusicApp", desarrollado para el proyecto integrador A, está basado en la lógica de una aplicación de música, en donde se puede recorrer una lista de canciones, buscar por nombre, autor o duración de la misma y ordenar la playlist de diferentes formas.
 
@@ -39,6 +46,15 @@ Tanto para el caso de mostrarla de principio a fin, como de fin a principio, ten
 - **Llena lista:**
 Depende de la cantidad de líneas de información que hayan en el archivo *songs.csv*, por lo que el tiempo de complejidad va a ser de O(n).
 
+- **Vaciar lista:**
+La complejidad de tiempo va a ser de O(n), debido a que se tiene que recorrer por completo la lista, para ir eliminando cada uno de sus elementos.
+
+- **Agregar un elemento a la lista:**
+Es O(1), o sea constante, debido a que siempre se van a insertar al final, usando *tail*.
+
+- **Eliminar un elemento a la lista:**
+En el peor de los casos vamos a tener una complejidad de O(n), ya que se busca el elemento a eliminar primero (por su index); por lo que puede estar al inicio, en medio, al final o simplemente no existir y devolver un mensaje de falla, cuando se llegue a dicha conclusión (o sea al final de ésta).
+
 - **Extras:**
 Mostrar el menú tiene una complejidad O(n), debido al *n* número de opciones que se muestran.
 Imprimir una sola canción es de complejidad contante, o sea: O(1)
@@ -53,8 +69,8 @@ Como se mencionó en la parte de arriba, además del archivo *.cpp* que contiene
 
 - Visualizar la playlist
 - Editar la playlist
-  - Agregar canciones -> pendiente
-  - Eliminar canciones -> pendiente
+  - Agregar canciones
+  - Eliminar canciones 
 - Ordenar la playlist 
   - Por nombre 
   - Por autor 
@@ -63,7 +79,7 @@ Como se mencionó en la parte de arriba, además del archivo *.cpp* que contiene
   - Por nombre
   - Por autor
   - Por tiempo de duración (en segundos) -> pendiente
-- Vaciar la lista -> pendiente
+- Vaciar la lista
 
 #### Implementa mecanismos de lectura de archivos correctos y útiles.
 En la parte de los archivos, podemos encontrar el de "songs.csv"; el cual contiene una lista de canciones con sus respetivas duraciones y autores.
