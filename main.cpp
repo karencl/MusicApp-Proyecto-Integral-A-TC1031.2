@@ -35,12 +35,8 @@ void printSong(Song*);
 
 int main() {
     
-    /*
-     * Opens the csv file. *Careful with the path, in case you move the document
-     * from folder or so.*
-     */
     ifstream
-    file("/Users/karencbrs/Documents/Xcode_projects/MusicApp/MusicApp/songs.csv");
+    file("songs.csv");
     
     if (!file.is_open()) {
         cout << "There was an error opening the file." << endl;
@@ -63,7 +59,7 @@ int main() {
     
     // Menu
     int option = 1;
-    while (option != 5) {
+    while (option != 8) {
         showMenu();
         cout << "Ingresa opción: ";
         cin >> option;
@@ -105,8 +101,49 @@ int main() {
             }
         }
         
-        // Sort playlist
+        // Add song
         else if (option == 4) {
+            cout << "Ingresa los datos de la nueva canción..." << endl;
+            string name, author;
+            int duration_mins, duration_secs;
+            
+            cout << "Nombre de la canción: ";
+            cin.ignore();
+            getline(cin, name);
+            cout << "Autor de la canción: ";
+            getline(cin, author);
+            cout << "Duración (solo los minutos): ";
+            cin >> duration_mins;
+            cout << "Duración (solo los segundos): ";
+            cin >> duration_secs;
+            
+            list.addSong(name, author, duration_mins, duration_secs);
+            cout << "\n¡Se agregó una nueva canción a la lista!" << endl;
+            
+            h = list.getHead();
+            t = list.getTail();
+        }
+        
+        // Delete song
+        else if (option == 5) {
+            list.showListForward();
+            
+            int song_pos;
+            cout << "Ingresa el número de la canción a eliminar..." << endl;
+            cin >> song_pos;
+            
+            bool result = list.deleteSong(song_pos-1);
+            if (result)
+                cout << "\nCanción eliminada exitosamente." << endl;
+            else
+                cout << "Error al eliminar la canción." << endl;
+            
+            h = list.getHead();
+            t = list.getTail();
+        }
+        
+        // Sort playlist
+        else if (option == 6) {
             int attribute;
             cout << "Elige el atributo por como quieres ordenar..." << endl;
             cout << "Por nombre (1) o autor (2): ";
@@ -121,8 +158,15 @@ int main() {
             }
         }
         
+        // Clear playlist
+        else if (option == 7) {
+            list.clearList();
+            
+            cout << "\nSe ha vaciado por completo la lista." << endl;
+        }
+        
         // Exit the cycle and end program
-        else if (option == 5) {
+        else if (option == 8) {
             cout << "Hasta pronto!" << endl;
         }
         
@@ -149,8 +193,11 @@ void showMenu() {
     cout << "1) Muestra playlist de principio a fin" << endl;
     cout << "2) Muestra playlist de fin a principio" << endl;
     cout << "3) Busca canción" << endl;
-    cout << "4) Ordena playlist" << endl;
-    cout << "5) Salir" << endl;
+    cout << "4) Agrega canción" << endl;
+    cout << "5) Elimina canción" << endl;
+    cout << "6) Ordena playlist" << endl;
+    cout << "7) Vaciar playlist" << endl;
+    cout << "8) Salir" << endl;
     cout << endl;
 }
 
