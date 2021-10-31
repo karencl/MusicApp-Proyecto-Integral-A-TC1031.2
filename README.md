@@ -1,8 +1,6 @@
-# IMPORTANTE ---> A calificar en el segundo avance:
+# IMPORTANTE ---> correcciones:
 
 - Se corrigió el error de no poder abrir el archivo *songs.csv*, por lo que ya se puede apreciar la lectura de archivos, su acomodo en la estructura lineal y el algoritmo de ordenamiento y búsqueda aplicado en esta.
-- Se implementó un menú para las consultas de información.
-- Análisis de complejidad de todo lo pedido hasta el momento.
 
 
 # MusciApp - Proyecto-Integral-A-TC1031.2
@@ -58,6 +56,7 @@ En el peor de los casos vamos a tener una complejidad de O(n), ya que se busca e
 - **Extras:**
 Mostrar el menú tiene una complejidad O(n), debido al *n* número de opciones que se muestran.
 Imprimir una sola canción es de complejidad contante, o sea: O(1)
+Modificar el archivo de las canciones tiene una complejidad de O(n), debido a que se recorre la lista entera para escribir los datos nuevamente.
 
 ... -> pendiente
 
@@ -74,17 +73,19 @@ Como se mencionó en la parte de arriba, además del archivo *.cpp* que contiene
 - Ordenar la playlist 
   - Por nombre 
   - Por autor 
-  - Por duración (en segundos) -> pendiente
 - Buscar una canción
   - Por nombre
   - Por autor
-  - Por tiempo de duración (en segundos) -> pendiente
 - Vaciar la lista
 
 #### Implementa mecanismos de lectura de archivos correctos y útiles.
 En la parte de los archivos, podemos encontrar el de "songs.csv"; el cual contiene una lista de canciones con sus respetivas duraciones y autores.
 
+Para obtener la información de este archivo se utilizan funciones *getData()*, con el fin de formar una estructura con ésta.
+
 #### Implementa mecanismos de escritura de archivos correctos y útiles. 
 El archivo y mencionado, se abre desde que inicia el programa y es usado para la extracción de datos, con el fin de usarlos en la estructura lineal, como almacén de estos.
 
-Se usan algunas funciones extras como *getData()*, *showListForward()*, *showListBackwards()*, *addSong()*, *deleteSong()*, *quickSort()* y *sequentialSearch()* con el fin de realizar más que lecturas, al agregar o eliminar líneas de datos en el archivo.
+Se usan algunas funciones extras como *addSong()*, *deleteSong()*, *quickSort()* y *sequentialSearch()* con el fin de ir modificando la estructura, para al final actualizar el archivo "songs.csv" (o sea: escribir los nuevos datos en éste).
+
+IMPORTANTE: cuando se modifica el archivo, se utiliza uno nuevo temporalmente para tener los nuevos datos. Sin embargo, en caso de que se quisieran obtener los datos del archivo demo de las canciones, se pueden encontrar en el archivo "originalSongs.txt". 
