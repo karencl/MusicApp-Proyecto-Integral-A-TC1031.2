@@ -22,7 +22,10 @@ Así mismo, se podrán hacer modificaciones en esta, al acomodar, agregar o elim
 El algoritmo de ordenamiento que utilicé fue el de *Quick Sort*, ya que a pesar de que la complejidad de tiempo en el peor de los casos es *O(n^2)*, este cuenta con una complejidad de tiempo bastante aceptable para el mejor caso y el promedio de estos, o sea: *O(n log(n))* y así mismo, en cuanto a complejidad de espacio en el peor e los casos, se tiene que es *O(log(n))*, que resulta mejor a comparación del *Merge Sort* por decir un ejemplo.
 
 #### Usa un árbol adecuado para resolver un problema.
-...
+El árbol que seleccioné para mi programa, fue un *Splay Tree*, debido a que sus complejidades en tiempo, son bastante buenas para inserción, borrado, búsqueda y demás.
+Con esta implementación, el recorrido y manipulación de la estructura resulta rápido y eficiente en cuanto a tiempo y memoria.
+
+**NOTA: Se hace un manejo diferente para el contenido de la lista doblemente enlazada y el árbol. Pues en la lista se guardan el nombre, autor y duración de cada canción, mientras que en el árbol solo se guardan las duraciones, para jugar un poco con estas y lo que se le muestra al usuario. (La lista de canciones que siempre se muestra en el output, sale de las funciones de la lista doblemente enlazada y no del árbol.**
 
 ## SICT0301B: Evalúa los componentes
 
@@ -53,13 +56,29 @@ Es O(1), o sea constante, debido a que siempre se van a insertar al final, usand
 - **Eliminar un elemento a la lista:**
 En el peor de los casos vamos a tener una complejidad de O(n), ya que se busca el elemento a eliminar primero (por su index); por lo que puede estar al inicio, en medio, al final o simplemente no existir y devolver un mensaje de falla, cuando se llegue a dicha conclusión (o sea al final de ésta).
 
+- **Llena árbol:**
+Al igual que con la lista doblemente enlazada, depende de la cantidad de líneas de información que hayan en el archivo *songs.csv*, por lo que el tiempo de complejidad va a ser de O(n).
+
+- **Agregar un elemento al árbol:**
+En el peor de los casos se tiene una complejidad de O(log(n)), debido no se recorre el árbol por completo, sino que más bien, solo se va pasando de nivel en nivel, según la posición que el elemento a agregar deba tener y haciendo las rotaciones necesarias para ello. (O sea no se recorre todo el árbol en si).
+
+- **Eliminar un elemento del árbol:**
+En el método de "remove()" se tiene una complejidad de tiempo de O(log(n)), ya que se va haciendo un tipo de búsqueda, hasta encontrar el elemento a eliminar (sin necesidad de pasar por cada nodo del árbol), para al final borrarlo y acomodar el árbol nuevamente.
+
+- **Vaciar árbol:**
+En este caso si se va a requerir recorrer todo el árbol, por lo que la complejidad de tiempo de esta función es de O(n).
+
+- **Obtener el tamaño de la playlist (mediante el árbol):**
+En mi programa este método tiene una complejidad de tiempo constante O(1), debido a que decidí hacer un atributo que fuera guardando el tamaño del árbol conforme se iban agregando o eliminando nodos.
+Sin embargo, si se hubiera sacado el tamaño a través de un recorrido del árbol, este método hubiera tenido una comlejidad de tiempo (para el peor de los casos) de O(n), debido a que se hubiera tenido que pasar por cada nodo para irlos contando hasta terminar.
+
+- **Obtener la duración total de la playlist (mediante el árbol):**
+Esto también tiene una complejidad de tiempo de O(n), ya que se requiere obtener el valor de cada nodo, e irlos sumando en una variable que guarda el tiempo total en segundos (luego ya se pasa a minutos y segundos).
+
 - **Extras:**
 Mostrar el menú tiene una complejidad O(n), debido al *n* número de opciones que se muestran.
 Imprimir una sola canción es de complejidad contante, o sea: O(1)
 Modificar el archivo de las canciones tiene una complejidad de O(n), debido a que se recorre la lista entera para escribir los datos nuevamente.
-
-... -> pendiente
-
 
 ## SICT0303B: Implementa acciones científicas
 
@@ -76,7 +95,9 @@ Como se mencionó en la parte de arriba, además del archivo *.cpp* que contiene
 - Buscar una canción
   - Por nombre
   - Por autor
-- Vaciar la lista
+- Obtener el tamaño de la lista (cantidad de canciones)
+- Obtener la duración (en minutos y segundos) total de la playlist
+- Vaciar playlist (o sea la lista y el árbol)
 
 #### Implementa mecanismos de lectura de archivos correctos y útiles.
 En la parte de los archivos, podemos encontrar el de "songs.csv"; el cual contiene una lista de canciones con sus respetivas duraciones y autores.
