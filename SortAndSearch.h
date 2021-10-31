@@ -22,6 +22,8 @@
 #ifndef SortAndSearch_h
 #define SortAndSearch_h
 
+#include <algorithm>
+
 #include "DLinkedList.h"
 #include "Song.h"
 using namespace std;
@@ -29,13 +31,13 @@ using namespace std;
 // SortOrSearch class
 class SortOrSearch {
     private:
-        // Private method
+        // Método privado
         void swapSong(Song*, Song*);
     public:
         // Constructor
         SortOrSearch(){};
     
-        // Public methods
+        // Métodos públicos
         void quickSort(Song*, Song*, int);
         Song* quickPartition(Song*, Song*, int);
         Song* sequentialSearch(Song*, Song*, string, int);
@@ -45,7 +47,7 @@ class SortOrSearch {
  * @param Song*, Song*
  * @return
  *
- * Swaps the values (name, author and duration) of two songs.
+ * Swap de los valores (name, author and duration) de dos canciones.
  *
  */
 void SortOrSearch::swapSong(Song *A, Song *B) {
@@ -66,16 +68,16 @@ void SortOrSearch::swapSong(Song *A, Song *B) {
  * @param Song*, Song*, int
  * @return
  *
- * Recursive function that calls itself to make the partitions of the list in
- * order to sort it using a pivot in each call.
+ * Función recursiva que hace el partido de la lista para ordenarla, usando un
+ * "pivote".
  *
  */
-void SortOrSearch::quickSort(Song *head, Song *tail, int attribute) {
-    if (head && head != tail && head != tail->next) {
-        Song *partition = quickPartition(head, tail, attribute);
+void SortOrSearch::quickSort(Song *start, Song *end, int attribute) {
+    if (end && end != start && start != end->next) {
+        Song *partition = quickPartition(start, end, attribute);
         
-        quickSort(head, partition->previous, attribute);
-        quickSort(partition->next, tail, attribute);
+        quickSort(start, partition->previous, attribute);
+        quickSort(partition->next, end, attribute);
     }
 }
 
@@ -83,21 +85,24 @@ void SortOrSearch::quickSort(Song *head, Song *tail, int attribute) {
  * @param Song*, Song*, int
  * @return Song*
  *
- * Compares the values (names or authors) of the songs in the partition using
- * the start and the end passed into the funcion, in order to sort it (swap the
- * values).
+ * Compara los valores (nombre o autor) de dos canciones de la partición, usando
+ * el "start" y "end" que se le pasa a la función, para poder hacer el
+ * ordenamiento, a través de swaps.
  *
  */
 Song* SortOrSearch::quickPartition(Song *start, Song *end, int attribute) {
     string pivot;
-    attribute == 1 ? pivot = end->name : pivot = end->author; // pivot
+    attribute == 1 ? pivot = end->name : pivot = end->author; // pivote
+    transform(pivot.begin(), pivot.end(), pivot.begin(), ::tolower);
     
-    Song *i = start->previous; // counter: low-1
+    Song *i = start->previous; // contador: end-1
     string j_atributte;
     for (Song *j = start; j != end; j = j->next) {
         attribute == 1 ? j_atributte = j->name : j_atributte = j->author;
+        transform(j_atributte.begin(), j_atributte.end(),
+                  j_atributte.begin(), ::tolower);
         if (j_atributte <= pivot) {
-            // increment i
+            // incremento i
             if (i)
                 i = i->next;
             else
@@ -106,7 +111,7 @@ Song* SortOrSearch::quickPartition(Song *start, Song *end, int attribute) {
             swapSong(i, j);
         }
     }
-    // increment i before the swap and return to avoid putting i+1 in both of them
+    // incremento i antes del swap y del return (así evito ponerlo 2 veces)
     if (i)
         i = i->next;
     else
@@ -121,8 +126,8 @@ Song* SortOrSearch::quickPartition(Song *start, Song *end, int attribute) {
  * @param Song*, Song*, string, int
  * @return Song*
  *
- * Searchs for an especific song in the list using sequential search and
- * returns the song if found.
+ * Busca una canción en específico de la lista, usando búsqueda secuencial.
+ * Se regresa la canción si ésta es encontrada.
  *
  */
 Song* SortOrSearch::sequentialSearch(Song* head, Song* tail, string x,
@@ -131,6 +136,7 @@ Song* SortOrSearch::sequentialSearch(Song* head, Song* tail, string x,
     Song *s = new Song();
     for (Song *i = head; i != tail->next; i = i->next) {
         attribute == 1 ? aux = i->name : aux = i->author;
+        transform(aux.begin(), aux.end(), aux.begin(), ::tolower);
         if (x == aux) {
             s = i;
             cout << "¡Canción encontrada!" << endl;

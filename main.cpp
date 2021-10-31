@@ -24,10 +24,12 @@
 #include <fstream>
 #include <string>
 #include <ctype.h>
+#include <algorithm>
 
 #include "Song.h"
 #include "DLinkedList.h"
 #include "SortAndSearch.h"
+#include "SplayTree.h"
 using namespace std;
 
 void showMenu();
@@ -35,47 +37,59 @@ void printSong(Song*);
 
 int main() {
     
-    ifstream
-    file("songs.csv");
+    ifstream file("songs.csv");
     
+    string skip;
     if (!file.is_open()) {
-        cout << "There was an error opening the file." << endl;
+        cout << "Hubo un error al abrir el archivo." << endl;
         return 1;
     } else {
-        string skip;
         getline(file, skip, '\n');
     }
     
-    // Sort y DLinkedList objects
+    // Objetos de Sort, DLinkedList y SplayTree.
     DLinkedList list;
     SortOrSearch s;
+    SplayTree splayt;
     
-    // Get data from the file and store it in the list
+    // Obtiene los datos del archivo y se guardan en la lista y en el árbol.
     list.getData(file);
+    file.clear();
+    file.seekg(0, ios::beg);
+    getline(file, skip, '\n');
+    splayt.fillTree(file);
     
-    // Get the "Head" and "Tail" of the list
+    // Getters de "Head" y "Tail" de la lista doblemente enlazada
     Song *h = list.getHead();
     Song *t = list.getTail();
     
-    // Menu
+    cout<<"Antes de iniciar, se puede observar el archivo 'songs.csv',\n";
+    cout<<"para apreciar el antes y después de que este sea modificado." << endl;
+    
+    cout<<"\nEl archivo original de las canciones se encuentra en otro archivo\n";
+    cout<<"de texto aparte, en caso de que se quieran correr las pruebas desde\n";
+    cout<<"un inicio. (Si no, simplemente se van a agregar las mismas canciones";
+    cout<<"\nuna y otra vez a éste)."<<endl;
+    
+    // Menú
     int option = 1;
-    while (option != 8) {
+    while (option != 10) {
         showMenu();
         cout << "Ingresa opción: ";
         cin >> option;
         cout << endl;
         
-        // Show playlist from beginning to end
+        // Muestra playlist de principio a fin (usando la lista)
         if (option == 1) {
             list.showListForward();
         }
         
-        // Show playlist from end to beginning
+        // Muestra playlist de fin a principio (usando la lista)
         else if (option == 2) {
             list.showListBackwards();
         }
         
-        // Search a song
+        // Busca una canción (por nombre o autor)
         else if (option == 3) {
             cout << "NOTA: Si hay más de una canción con el mismo autor o nombre";
             cout << ", saldrá la primera que se encuentre en la lista.\n" << endl;
@@ -89,10 +103,12 @@ int main() {
             if (attribute == 1 || attribute == 2) {
                 string busca;
                 cout << "Ingresa lo que quieres buscar..." << endl;
-                cout << "* Toma en cuenta mayúsculas y minúsculas y espacios *: ";
+                cout << "* Toma en cuenta los espacios *: ";
                 cin.ignore();
                 getline(cin, busca);
                 cout << endl;
+                
+                transform(busca.begin(), busca.end(), busca.begin(), ::tolower);
                 
                 Song *aux = s.sequentialSearch(h, t, busca, attribute);
                 printSong(aux);
@@ -101,7 +117,7 @@ int main() {
             }
         }
         
-        // Add song
+        // Agrega una canción (tanto a la lista, como al árbol)
         else if (option == 4) {
             cout << "Ingresa los datos de la nueva canción..." << endl;
             string name, author;
@@ -117,32 +133,37 @@ int main() {
             cout << "Duración (solo los segundos): ";
             cin >> duration_secs;
             
+            int total_dur = (duration_mins*60) + duration_secs;
+            
             list.addSong(name, author, duration_mins, duration_secs);
+            splayt.add(total_dur);
             cout << "\n¡Se agregó una nueva canción a la lista!" << endl;
             
             h = list.getHead();
             t = list.getTail();
         }
         
-        // Delete song
+        // Elimina una canción (tanto de la lista, como del árbol)
         else if (option == 5) {
             list.showListForward();
             
-            int song_pos;
+            int song_pos, dur_to_remove_in_tree = 0;
             cout << "Ingresa el número de la canción a eliminar..." << endl;
             cin >> song_pos;
             
-            bool result = list.deleteSong(song_pos-1);
-            if (result)
+            bool result = list.deleteSong(song_pos-1, dur_to_remove_in_tree);
+            if (result) {
                 cout << "\nCanción eliminada exitosamente." << endl;
-            else
+                if (dur_to_remove_in_tree != 0)
+                    splayt.remove(dur_to_remove_in_tree);
+            } else
                 cout << "Error al eliminar la canción." << endl;
             
             h = list.getHead();
             t = list.getTail();
         }
         
-        // Sort playlist
+        // Ordena la playlist (por nombre o autor)
         else if (option == 6) {
             int attribute;
             cout << "Elige el atributo por como quieres ordenar..." << endl;
@@ -158,25 +179,51 @@ int main() {
             }
         }
         
-        // Clear playlist
+        // Obtiene la duración total en minutos y segundos (usando el árbol)
         else if (option == 7) {
-            list.clearList();
+            int pl_duration = 0;
+            cout << "La duración total de la playlist es:" << endl;
             
+            pl_duration = splayt.playlistDuration();
+            cout << pl_duration / 60 << " minutos con ";
+            cout << pl_duration % 60 << " segundos" << endl;
+        }
+        
+        // Obtiene el tamaño o número de canciones (usando el árbol)
+        else if (option == 8) {
+            cout << "El tamaño de la playlist es:" << endl;
+            cout << splayt.size() << " canciones" << endl;
+        }
+        
+        // Vacía tanto la lista como el árbol
+        else if (option == 9) {
+            list.clearList();
+            splayt.clearTree();
             cout << "\nSe ha vaciado por completo la lista." << endl;
         }
         
-        // Exit the cycle and end program
-        else if (option == 8) {
+        // Sale del "while", actualiza el archivo .csv y termina el programa
+        else if (option == 10) {
+            fstream new_file;
+            new_file.open("new_songs.csv", ios::out);
+            
+            list.writeData(new_file);
+            
+            file.close();
+            new_file.close();
+            
+            remove("songs.csv");
+            rename("new_songs.csv", "songs.csv");
+            
             cout << "Hasta pronto!" << endl;
         }
         
-        // Error message for option not found
+        // Error -> opción no válida
         else {
             cout << "¡Error! Opción no disponible." << endl;
         }
     }
-    
-    file.close();
+
     return 0;
 }
 
@@ -184,7 +231,7 @@ int main() {
  * @param
  * @return
  *
- * Shows the menu
+ * Muestra el menú
  *
  */
 void showMenu() {
@@ -196,8 +243,10 @@ void showMenu() {
     cout << "4) Agrega canción" << endl;
     cout << "5) Elimina canción" << endl;
     cout << "6) Ordena playlist" << endl;
-    cout << "7) Vaciar playlist" << endl;
-    cout << "8) Salir" << endl;
+    cout << "7) Obtén la duración total de la playlist" << endl;
+    cout << "8) Obtén el tamaño de la playlist" << endl;
+    cout << "9) Vaciar playlist" << endl;
+    cout << "10) Salir" << endl;
     cout << endl;
 }
 
@@ -205,7 +254,7 @@ void showMenu() {
  * @param
  * @return Song*
  *
- * Prints the data of one song
+ * Imprime los datos de una canción en específico
  *
  */
 void printSong(Song* s) {

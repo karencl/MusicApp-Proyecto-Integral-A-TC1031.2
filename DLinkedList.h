@@ -23,12 +23,13 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 // DLinkedList class
 class DLinkedList {
     private:
-        // Private attributes
+        // Atributos privados
         Song *head;
         Song *tail;
     public:
@@ -39,20 +40,21 @@ class DLinkedList {
         Song* getHead();
         Song* getTail();
     
-        // Public methods
+        // Métodos públicos
         void getData(ifstream&);
         void showListForward();
         void showListBackwards();
         void addSong(string, string, int, int);
-        bool deleteSong(int);
+        bool deleteSong(int, int&);
         void clearList();
+        void writeData(fstream&);
 };
 
 /*
  * @param
  * @return Song*
  *
- * Getter of the head of the list
+ * Getter de "head" (el principio de la lista)
  *
  */
 Song* DLinkedList::getHead() {
@@ -63,7 +65,7 @@ Song* DLinkedList::getHead() {
  * @param
  * @return Song*
  *
- * Getter of the tail of the list
+ * Getter de "tail" (el final de la lista)
  *
  */
 Song* DLinkedList::getTail() {
@@ -74,9 +76,9 @@ Song* DLinkedList::getTail() {
  * @param ifstream&
  * @return
  *
- * Creates the list using the data from the "songs.csv" file.
- * Each line is read and new Songs are created with the three attributes in each
- * line: name, author and duration (in seconds).
+ * Crea la lista usando los datos del archivo "songs.csv".
+ * Se lee cada línea, creando en cada vuelta una canción, con sus respectivos
+ * atributos (nombre, autor y la duración en segundos).
  *
  */
 void DLinkedList::getData(ifstream &file) {
@@ -92,7 +94,7 @@ void DLinkedList::getData(ifstream &file) {
         string duration;
         getline(file, duration, '\n');
         new_song->duration = atoi(duration.c_str());
-        
+    
         if (!head) {
             head = new_song;
             new_song->previous = NULL;
@@ -111,8 +113,8 @@ void DLinkedList::getData(ifstream &file) {
  * @param
  * @return
  *
- * Shows the list from beginning to end, using a helper song: "current", that
- * keeps moving forward until it gets to NULL.
+ * Imprime la lista de principio a fin, usando un auxiliar "current", que se va
+ * moviendo a través de la lista, hasta que sea NULL.
  *
  */
 void DLinkedList::showListForward() {
@@ -145,8 +147,8 @@ void DLinkedList::showListForward() {
  * @param
  * @return
  *
- * Shows the list from end to beginning, using a helper song: "current", that
- * keeps moving backwards until it gets to NULL.
+ * Imprime la lista de fin a principio, usando un auxiliar "current", que se va
+ * moviendo a través de la lista, hasta que sea NULL.
  *
  */
 void DLinkedList::showListBackwards() {
@@ -179,7 +181,7 @@ void DLinkedList::showListBackwards() {
  * @param string, string, int, int
  * @return
  *
- * A new song gets added to the end of the list using tail.
+ * Se agrega una canción al final de la lista, usando "tail".
  *
  */
 void DLinkedList::addSong(string _name, string _author, int dur_min, int dur_sec){
@@ -202,10 +204,10 @@ void DLinkedList::addSong(string _name, string _author, int dur_min, int dur_sec
  * @param int
  * @return bool
  *
- * A new song gets removed from the list and deleted, using it's index in it.
+ * Se remueve y elimina una canción de la lista, a través del index que es pasado.
  *
  */
-bool DLinkedList::deleteSong(int pos) {
+bool DLinkedList::deleteSong(int pos, int &removed_song_duration) {
     Song *aux = head;
     bool removed = false;
     
@@ -217,6 +219,7 @@ bool DLinkedList::deleteSong(int pos) {
         if (pos == 0) {
             head = head->next;
             head->previous = NULL;
+            removed_song_duration = song_to_be_removed->duration;
             delete song_to_be_removed;
             
             removed = true;
@@ -238,6 +241,7 @@ bool DLinkedList::deleteSong(int pos) {
                         aux2->next->previous = aux1;
                     }
                     
+                    removed_song_duration = song_to_be_removed->duration;
                     delete song_to_be_removed;
                     removed = true;
                     return removed;
@@ -257,8 +261,8 @@ bool DLinkedList::deleteSong(int pos) {
  * @param
  * @return
  *
- * Clears the playlist.
- * (All songs are removed and deleted from it).
+ * Se vacía la lista.
+ * (Todas las canciones son removidad y eliminadas).
  *
  */
 void DLinkedList::clearList() {
@@ -273,6 +277,32 @@ void DLinkedList::clearList() {
     
     head = NULL;
     tail = NULL;
+}
+
+/*
+ * @param ifstream&
+ * @return
+ *
+ * Se llena un nuevo archivo de canciones, con los datos de la lista doblemente
+ * enlazada, con el fin de tener nuestro archivo "songs.csv" actualizado al
+ * término del programa.
+ *
+ */
+void DLinkedList::writeData(fstream &new_file) {
+    Song *aux = head;
+
+    new_file << "name,author,duration\n";
+    
+    while (aux) {
+        stringstream aux_string;
+        
+        aux_string << aux->name << "," << aux->author << ",";
+        aux_string << to_string(aux->duration) + "\n";
+        
+        new_file << aux_string.str();
+       
+        aux = aux->next;
+    }
 }
 
 #endif /* DLinkedList_h */

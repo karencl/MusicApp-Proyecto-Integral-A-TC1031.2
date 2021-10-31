@@ -22,9 +22,9 @@
 
 using namespace std;
 
-// Struct Song
+// Structura "Song"
 struct Song {
-    // Pointers and data
+    // Apuntadores y datos
     Song *previous;
     string name;
     string author;
