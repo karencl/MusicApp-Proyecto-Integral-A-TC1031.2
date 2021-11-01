@@ -2,6 +2,10 @@
 
 - Se corrigió el error de no poder abrir el archivo *songs.csv*, por lo que ya se puede apreciar la lectura de archivos, su acomodo en la estructura lineal y el algoritmo de ordenamiento y búsqueda aplicado en esta.
 
+# IMPORTANTE ---> especificaciones de los archivos:
+- Se agregó un archivo llamado "originalSongs.txt" que contiene las canciones originales que se utilizaron para las prubebas del programa. En caso de el archivo "songs.csv" se quiera regresar a su estado original, solo se tienen que copiar los datos del nuevo archivo agregado que tontiene las originales.
+- Se agregó el main de pruebas.
+
 
 # MusciApp - Proyecto-Integral-A-TC1031.2
 El proyecto de "MusicApp", desarrollado para el proyecto integrador A, está basado en la lógica de una aplicación de música, en donde se puede recorrer una lista de canciones, buscar por nombre, autor o duración de la misma y ordenar la playlist de diferentes formas.
@@ -22,7 +26,7 @@ Así mismo, se podrán hacer modificaciones en esta, al acomodar, agregar o elim
 El algoritmo de ordenamiento que utilicé fue el de *Quick Sort*, ya que a pesar de que la complejidad de tiempo en el peor de los casos es *O(n^2)*, este cuenta con una complejidad de tiempo bastante aceptable para el mejor caso y el promedio de estos, o sea: *O(n log(n))* y así mismo, en cuanto a complejidad de espacio en el peor e los casos, se tiene que es *O(log(n))*, que resulta mejor a comparación del *Merge Sort* por decir un ejemplo.
 
 #### Usa un árbol adecuado para resolver un problema.
-El árbol que seleccioné para mi programa, fue un *Splay Tree*, debido a que sus complejidades en tiempo, son bastante buenas para inserción, borrado, búsqueda y demás.
+El árbol que seleccioné para mi programa, fue un *Splay Tree*, debido a que sus complejidades en tiempo (O(log(n) en la mayoría de los casos en cuanto a manipulación del árbol), son bastante buenas para inserción, borrado, búsqueda y demás.
 Con esta implementación, el recorrido y manipulación de la estructura resulta rápido y eficiente en cuanto a tiempo y memoria.
 
 **NOTA: Se hace un manejo diferente para el contenido de la lista doblemente enlazada y el árbol. Pues en la lista se guardan el nombre, autor y duración de cada canción, mientras que en el árbol solo se guardan las duraciones, para jugar un poco con estas y lo que se le muestra al usuario. (La lista de canciones que siempre se muestra en el output, sale de las funciones de la lista doblemente enlazada y no del árbol.**
@@ -30,7 +34,9 @@ Con esta implementación, el recorrido y manipulación de la estructura resulta 
 ## SICT0301B: Evalúa los componentes
 
 #### Presenta Casos de prueba para todas las funciones y procedimientos del programa.
-...
+Se agregó un "mainDePruebas.cpp", que contiene los llamados de las funciones en general de todo el programa, con el fin de poder visializar el funcionamiento de éste.
+
+**NOTA: Para poder utilizar este archivo, se tiene que descargar en vez del "main.cpp" o bien, copiar el código que está en éste y copiarlo en el archivo que ya se tenga del main.**
 
 #### Hace un análisis de complejidad correcto y completo para todo el programa y sus componentes.
 - **Busca elemento en lista:**
