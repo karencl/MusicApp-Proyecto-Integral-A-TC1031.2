@@ -323,11 +323,11 @@ void TreeNode::clearTree() {
 }
 
 /*
- * @param
- * @return int&
+ * @param TreeNode*
+ * @return int
  *
  * Suma las duraciones (todos los nodos del árbol), haciendo un recorrido de
- * éste de forma "in-order".
+ * éste de forma parecida al recorrido "in-order".
  *
  */
 int TreeNode::playlistDuration(TreeNode *node) {
