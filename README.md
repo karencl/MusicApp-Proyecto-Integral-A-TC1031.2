@@ -4,7 +4,6 @@
 
 # IMPORTANTE ---> especificaciones de los archivos:
 - Se agregó un archivo llamado "originalSongs.txt" que contiene las canciones originales que se utilizaron para las prubebas del programa. En caso de el archivo "songs.csv" se quiera regresar a su estado original, solo se tienen que copiar los datos del nuevo archivo agregado que tontiene las originales.
-- Se agregó el main de pruebas.
 
 
 # MusciApp - Proyecto-Integral-A-TC1031.2
@@ -33,10 +32,7 @@ Con esta implementación, el recorrido y manipulación de la estructura resulta 
 
 ## SICT0301B: Evalúa los componentes
 
-#### Presenta Casos de prueba para todas las funciones y procedimientos del programa.
-Se agregó un "mainDePruebas.cpp", que contiene los llamados de las funciones en general de todo el programa, con el fin de poder visializar el funcionamiento de éste.
-
-**NOTA: Para poder utilizar este archivo, se tiene que descargar en vez del "main.cpp" o bien, copiar el código que está en éste y copiarlo en el archivo que ya se tenga del main.**
+#### Presenta Casos de prueba para todas las funciones y procedimientos del programa (Esto se entregó en la Integral B)
 
 #### Hace un análisis de complejidad correcto y completo para todo el programa y sus componentes.
 - **Busca elemento en lista:**
