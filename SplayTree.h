@@ -56,7 +56,7 @@ class TreeNode {
         TreeNode* add(int);
         TreeNode* remove(int);
         void clearTree();
-        int playlistDuration(TreeNode*);
+        void playlistDuration(int&);
 
         // Clase "SplayTree" puesta como friend de "TreeNode"
         friend class SplayTree;
@@ -323,19 +323,20 @@ void TreeNode::clearTree() {
 }
 
 /*
- * @param TreeNode*
- * @return int
+ * @param int&
+ * @return
  *
  * Suma las duraciones (todos los nodos del árbol), haciendo un recorrido de
  * éste de forma parecida al recorrido "in-order".
  *
  */
-int TreeNode::playlistDuration(TreeNode *node) {
-    if (!node) {
-        return 0;
-    } else {
-        return (value + node->playlistDuration(node->left) +
-                node->playlistDuration(node->right));
+void TreeNode::playlistDuration(int &dur) {
+    dur += value;
+    if (left) {
+        left->playlistDuration(dur);
+    }
+    if (right) {
+        right->playlistDuration(dur);
     }
 }
 
@@ -472,10 +473,10 @@ void SplayTree::clearTree() {
  *
  */
 int SplayTree::playlistDuration() {
-    TreeNode *aux = root;
-    if (aux)
-        return aux->playlistDuration(aux);
-    return 0;
+    int dur = 0;
+    if (root)
+        root->playlistDuration(dur);
+    return dur;
 }
 
 #endif /* SplayTree_h */

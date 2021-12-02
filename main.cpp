@@ -187,8 +187,7 @@ int main() {
             cout << pl_duration / 60 << " minutos con ";
             cout << pl_duration % 60 << " segundos" << endl;
             
-            cout << "\n*(Puede variar un poco entre segundos, debido a los \n";
-            cout << "operadores usados en el código y los decimales)*" << endl;
+            cout << "\n*(Puede variar un poco entre segundos)*" << endl;
         }
         
         // Obtiene el tamaño o número de canciones (usando el árbol)
