@@ -67,9 +67,8 @@ int main() {
     cout<<"para apreciar el antes y después de que este sea modificado." << endl;
     
     cout<<"\nEl archivo original de las canciones se encuentra en otro archivo\n";
-    cout<<"de texto aparte, en caso de que se quieran correr las pruebas desde\n";
-    cout<<"un inicio. (Si no, simplemente se van a agregar las mismas canciones";
-    cout<<"\nuna y otra vez a éste)."<<endl;
+    cout<<"de texto aparte (originalSongs.txt), en caso de que se quieran \n";
+    cout<<"hacer más pruebas desde un inicio con los datos originales."<<endl;
     
     // Menú
     int option = 1;
@@ -187,6 +186,9 @@ int main() {
             pl_duration = splayt.playlistDuration();
             cout << pl_duration / 60 << " minutos con ";
             cout << pl_duration % 60 << " segundos" << endl;
+            
+            cout << "\n*(Puede variar un poco entre segundos, debido a los \n";
+            cout << "operadores usados en el código y los decimales)*" << endl;
         }
         
         // Obtiene el tamaño o número de canciones (usando el árbol)
@@ -216,6 +218,8 @@ int main() {
             rename("new_songs.csv", "songs.csv");
             
             cout << "Hasta pronto!" << endl;
+            cout << "No olvides revisar el archivo songs.csv para ver las ";
+            cout << "modificaciones hechas en éste." << endl;
         }
         
         // Error -> opción no válida

@@ -474,7 +474,7 @@ void SplayTree::clearTree() {
 int SplayTree::playlistDuration() {
     TreeNode *aux = root;
     if (aux)
-        return root->playlistDuration(root);
+        return aux->playlistDuration(aux);
     return 0;
 }
 
